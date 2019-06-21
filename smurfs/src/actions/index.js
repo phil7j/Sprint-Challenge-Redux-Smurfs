@@ -19,12 +19,15 @@ import axios from 'axios'
 export const FETCHING = 'FETCHING'
 export const CREATING = 'CREATING'
 export const DELETING = 'DELETING'
+export const UPDATING = 'UPDATING'
 export const FETCH_SUCCESS = 'FETCH_SUCCESS';
 export const FETCH_FAILURE = 'FETCH_FAILURE';
 export const POST_SUCCESS = 'POST_SUCCESS';
 export const POST_FAILURE = 'POST_FAILURE';
 export const DELETE_SUCCESS = 'DELETE_SUCCESS'
 export const DELETE_FAILURE = 'DELETE_FAILURE'
+export const UPDATE_SUCCESS = 'UPDATE_SUCCESS'
+export const UPDATE_FAILURE = 'UPDATE_FAILURE'
 
 export const getSmurfs = () => dispatch => {
   dispatch({ type: FETCHING });
@@ -59,4 +62,14 @@ export const deleteSmurf = id => dispatch => {
       dispatch({ type: DELETE_SUCCESS, payload: res.data });
     })
     .catch(err => dispatch({ type: DELETE_FAILURE, payload: err }));
+};
+
+export const updateSmurf = smurf => dispatch => {
+  dispatch({ type: UPDATING });
+  axios
+    .put(`http://localhost:3333/smurfs/${smurf.id}`, smurf)
+    .then(res => {
+      dispatch({ type: UPDATE_SUCCESS, payload: res.data });
+    })
+    .catch(err => dispatch({ type: UPDATE_FAILURE, payload: err }));
 };

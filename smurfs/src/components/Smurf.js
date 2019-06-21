@@ -9,6 +9,10 @@ class Smurf extends Component {
         this.props.deleteSmurf(id);
     }
 
+    update = id => {
+        this.props.findSmurf(id)
+    }
+
      render(){
         const id = this.props.smurf.id
          return (
@@ -17,6 +21,7 @@ class Smurf extends Component {
                  <p>Age: {this.props.smurf.age}</p>
                  <p>Height: {this.props.smurf.height}</p>
                  <button onClick={()=>this.delete(id)}>Delete</button>
+                 <button onClick={()=>this.update(id)}>Update</button>
              </div>
          )
      }

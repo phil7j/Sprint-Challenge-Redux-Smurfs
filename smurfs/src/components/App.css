@@ -9,6 +9,7 @@
   flex-wrap: wrap;
   width: 80%;
   margin: auto;
+  justify-content: center;
 }
 
 .smurf {
