@@ -18,10 +18,13 @@ import axios from 'axios'
 
 export const FETCHING = 'FETCHING'
 export const CREATING = 'CREATING'
+export const DELETING = 'DELETING'
 export const FETCH_SUCCESS = 'FETCH_SUCCESS';
 export const FETCH_FAILURE = 'FETCH_FAILURE';
 export const POST_SUCCESS = 'POST_SUCCESS';
 export const POST_FAILURE = 'POST_FAILURE';
+export const DELETE_SUCCESS = 'DELETE_SUCCESS'
+export const DELETE_FAILURE = 'DELETE_FAILURE'
 
 export const getSmurfs = () => dispatch => {
   dispatch({ type: FETCHING });
@@ -31,4 +34,29 @@ export const getSmurfs = () => dispatch => {
       dispatch({ type: FETCH_SUCCESS, payload: res.data });
     })
     .catch(err => dispatch({ type: FETCH_FAILURE, payload: err }));
+};
+
+export const postSmurfs = data => dispatch => {
+  dispatch({ type: CREATING});
+
+  axios
+    .post(`http://localhost:3333/smurfs`, data )
+      .then( res=> {
+        console.log(res, 'Data sent back from server')
+        dispatch({type: POST_SUCCESS, payload: res.data})
+      })
+      .catch( err => {
+        console.log(err, 'error from server')
+        dispatch({ type:POST_FAILURE, payload: err })
+      })
+}
+
+export const deleteSmurf = id => dispatch => {
+  dispatch({ type: DELETING });
+  axios
+    .delete(`http://localhost:3333/smurfs/${id}`)
+    .then(res => {
+      dispatch({ type: DELETE_SUCCESS, payload: res.data });
+    })
+    .catch(err => dispatch({ type: DELETE_FAILURE, payload: err }));
 };

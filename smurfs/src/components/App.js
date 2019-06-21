@@ -4,6 +4,8 @@ import Form from './Form'
 import './App.css';
 import { connect } from 'react-redux'
 import { getSmurfs } from '../actions'
+import { postSmurfs} from '../actions'
+import { deleteSmurf} from '../actions'
 /*
  to wire this component up you're going to need a few things.
  I'll let you do this part on your own.
@@ -19,10 +21,11 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        { this.props.fetchingSmurfs ? <h1>Loading...</h1> : <Smurfs smurfs={this.props.smurfs}/> }
-
-        <Form />
+      <div className="app">
+        <h1>Smurf Village</h1>
+        { this.props.fetchingSmurfs ? <h1>Loading...</h1> : <Smurfs smurfs={this.props.smurfs} deleteSmurf={this.props.deleteSmurf}/> }
+        { this.props.error ? <h2>{this.props.error}</h2> : null }
+        <Form postSmurfs={this.props.postSmurfs}/>
       </div>
     );
   }
@@ -35,4 +38,4 @@ const mapStateToProps = state => ({
   smurfs: state.smurfs
 })
 
-export default connect(mapStateToProps, {getSmurfs})(App)
+export default connect(mapStateToProps, {getSmurfs, postSmurfs, deleteSmurf})(App)

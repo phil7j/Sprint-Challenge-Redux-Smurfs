@@ -4,10 +4,13 @@
 import {
   FETCHING,
   CREATING,
+  DELETING,
   FETCH_SUCCESS,
   FETCH_FAILURE,
   POST_SUCCESS,
-  POST_FAILURE
+  POST_FAILURE,
+  DELETE_SUCCESS,
+  DELETE_FAILURE
 
 } from '../actions';
 
@@ -15,6 +18,7 @@ import {
    smurfs: [],
    fetchingSmurfs: false,
    creatingSmurf: false,
+   deletingSmurf: false,
    error: null
   //  updatingSmurf: false,
   //  deletingSmurf: false,
@@ -45,7 +49,7 @@ const reducer = (state = initialState, action) => {
         case FETCH_FAILURE:
           return {
             ...state,
-            error: "Oh no something bad happened! :(",
+            error: action.payload,
             fetchingSmurfs: false
           }
           case CREATING:
@@ -54,18 +58,35 @@ const reducer = (state = initialState, action) => {
             creatingSmurf: true
           }
           case POST_SUCCESS:
-              const newSmurf = { name: action.payload.name, age: action.payload.age, height: action.payload.height}
             return {
               ...state,
               creatingSmurf: false,
-              smurfs: {...state.smurfs, newSmurf}
+              smurfs: action.payload,
+              error: null
             }
             case POST_FAILURE:
               return {
                 ...state,
                 creatingSmurf: false,
-                error: 'Couldnt add Smurf! Sorry!!'
+                error: action.payload.response.data.Error
               }
+            case DELETING:
+              return {
+                ...state,
+                deletingSmurf: true
+              }
+            case DELETE_SUCCESS:
+              return {
+                ...state,
+                smurfs: action.payload,
+                deletingSmurf: false
+              }
+            case DELETE_FAILURE:
+                return {
+                  ...state,
+                  deletingSmurf: false,
+                  error: action.payload.response.data.Error
+                }
               default:
                   return state;
     }
